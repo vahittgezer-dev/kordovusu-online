@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Kör Dövüşü • Yönetim Merkezi</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{--gold:#e8b83e;--gold2:#765410;--ink:#070707;--panel:#11110f;--line:#3f3317;--green:#35df7b;--muted:#aaa79d}
+    *{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 50% -20%,#3a2a08 0,#090909 35%,#030303 100%);color:#eee;font:14px Arial,sans-serif;min-height:100vh}
+    .shell{max-width:1320px;margin:auto;padding:24px}.top{display:flex;align-items:center;gap:16px;border:1px solid var(--gold2);border-bottom:3px solid var(--gold);padding:15px 18px;background:#090908eF;box-shadow:0 10px 35px #000}
+    .crest{width:58px;height:58px;border:2px solid var(--gold);border-radius:50%;display:grid;place-items:center;font-size:28px;background:#1a1305}.brand h1{margin:0;color:#ffd966;font-size:25px}.brand p{margin:5px 0 0;color:var(--muted)}
+    .status{margin-left:auto;text-align:right}.live{color:var(--green);font-weight:800}.login{max-width:440px;margin:10vh auto;padding:26px;border:1px solid var(--gold2);border-radius:14px;background:#0d0d0cec;box-shadow:0 0 40px #a7761525}.login h2{color:#ffd767;margin-top:0}
+    input,button{font:700 15px Arial;border-radius:7px;min-height:46px}input{width:100%;margin:7px 0;padding:0 13px;background:#050505;border:1px solid #60501f;color:white}button{border:1px solid var(--gold);background:linear-gradient(#2b210a,#0e0c06);color:#ffd96e;padding:0 18px;cursor:pointer}button:hover{filter:brightness(1.25)}
+    .toolbar{display:flex;gap:9px;align-items:center;margin:18px 0}.toolbar button:last-child{margin-left:auto}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric,.box{border:1px solid var(--line);border-radius:11px;background:linear-gradient(145deg,#15130d,#090909);box-shadow:0 8px 22px #0008}.metric{padding:18px}.metric b{display:block;color:var(--gold);font-size:31px;margin-top:7px}.metric span{color:var(--muted);font-weight:bold}
+    .box{margin-top:14px;padding:14px;overflow:hidden}.box h2{color:#ffd767;font-size:18px;margin:2px 0 13px}.tablewrap{overflow:auto;max-height:480px}table{width:100%;border-collapse:collapse;white-space:nowrap}th,td{text-align:left;padding:11px;border-bottom:1px solid #292514}th{position:sticky;top:0;background:#151208;color:#eac65f;z-index:1}.pill{padding:5px 9px;border-radius:20px;background:#30260b;color:#eac65f;font-weight:bold}.on{background:#07381c;color:#65f49d}.off{background:#272727;color:#aaa}.tabs{display:flex;gap:8px}.tabs button.active{background:#6a4c0c;color:#fff2a6}.hidden{display:none!important}.error{color:#ff6d6d;font-weight:bold;margin-top:10px}
+    @media(max-width:760px){.shell{padding:8px}.top{padding:10px}.brand h1{font-size:19px}.brand p{display:none}.crest{width:45px;height:45px}.grid{grid-template-columns:1fr 1fr}.metric{padding:12px}.metric b{font-size:24px}.toolbar{flex-wrap:wrap}.status{font-size:11px}.box{padding:8px}th,td{padding:9px 7px}}
+  </style>
+</head>
+<body><main class="shell">
+  <header class="top"><div class="crest">⚽</div><div class="brand"><h1>KÖR DÖVÜŞÜ • YÖNETİM MERKEZİ</h1><p>Oyuncular, çevrimiçi durum ve maç odaları</p></div><div class="status"><div id="connection">SUNUCUYA BAĞLANIYOR</div><small id="updated">—</small></div></header>
+  <section id="login" class="login"><h2>Yönetici Girişi</h2><p>Oyunun yönetici hesabıyla giriş yap.</p><input id="email" type="email" placeholder="E-posta"><input id="password" type="password" placeholder="Şifre"><button id="loginBtn">GİRİŞ YAP</button><div id="loginError" class="error"></div></section>
+  <section id="dashboard" class="hidden">
+    <div class="toolbar"><div class="tabs"><button data-tab="players" class="active">OYUNCULAR</button><button data-tab="rooms">MAÇ ODALARI</button><button data-tab="events">HAREKETLER</button></div><button id="refresh">YENİLE</button><button id="logout">ÇIKIŞ</button></div>
+    <div class="grid"><div class="metric"><span>KAYITLI OYUNCU</span><b id="registered">0</b></div><div class="metric"><span>ŞU AN ONLINE</span><b id="online">0</b></div><div class="metric"><span>AKTİF ODA</span><b id="activeRooms">0</b></div><div class="metric"><span>BUGÜNKÜ MAÇ/ODA</span><b id="matchesToday">0</b></div></div>
+    <div id="players" class="box panel"><h2>Oyuncu Durumu</h2><div class="tablewrap"><table><thead><tr><th>Durum</th><th>Kullanıcı</th><th>Bulunduğu yer</th><th>Son hareket</th><th>Cihaz</th><th>Son görülme</th></tr></thead><tbody id="playersBody"></tbody></table></div></div>
+    <div id="rooms" class="box panel hidden"><h2>Son 24 Saatteki Maç Odaları</h2><div class="tablewrap"><table><thead><tr><th>Oda</th><th>Durum</th><th>Ev sahibi</th><th>Misafir</th><th>Güncelleme</th></tr></thead><tbody id="roomsBody"></tbody></table></div></div>
+    <div id="events" class="box panel hidden"><h2>Son Oyuncu Hareketleri</h2><div class="tablewrap"><table><thead><tr><th>Zaman</th><th>Kullanıcı</th><th>Ekran</th><th>Hareket</th></tr></thead><tbody id="eventsBody"></tbody></table></div></div>
+  </section>
+</main><script>
+const client=supabase.createClient('https://razhqfvyaqegvewpxude.supabase.co','sb_publishable_aAI3s24gXIQq2dhaAv6GZQ_yHdKBOAi');
+const $=id=>document.getElementById(id), fmt=v=>v?new Date(v).toLocaleString('tr-TR'):'—'; let timer;
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function load(){const {data,error}=await client.rpc('admin_dashboard_snapshot');if(error){$('connection').textContent='YETKİ / BAĞLANTI HATASI';$('connection').className='error';return} $('connection').textContent='● CANLI';$('connection').className='live';$('updated').textContent='Son güncelleme: '+fmt(data.generated_at);for(const [id,key] of [['registered','registered'],['online','online'],['activeRooms','active_rooms'],['matchesToday','matches_today']])$(id).textContent=data.stats[key];$('playersBody').innerHTML=data.players.map(p=>`<tr><td><span class="pill ${p.is_online?'on':'off'}">${p.is_online?'ONLINE':'OFFLINE'}</span></td><td><b>${esc(p.username||'İsimsiz')}</b></td><td>${esc(p.current_screen)}</td><td>${esc(p.activity)}</td><td>${esc(p.platform||'—')} ${esc(p.app_version||'')}</td><td>${fmt(p.last_seen_at)}</td></tr>`).join('');$('roomsBody').innerHTML=data.rooms.map(r=>`<tr><td><b>${esc(r.room_code)}</b></td><td>${esc(r.status)}</td><td>${esc(r.host_username||'—')}</td><td>${esc(r.guest_username||'—')}</td><td>${fmt(r.updated_at)}</td></tr>`).join('');$('eventsBody').innerHTML=data.events.map(e=>`<tr><td>${fmt(e.created_at)}</td><td><b>${esc(e.username)}</b></td><td>${esc(e.screen)}</td><td>${esc(e.activity)}</td></tr>`).join('')}
+async function show(){const {data:{session}}=await client.auth.getSession();$('login').classList.toggle('hidden',!!session);$('dashboard').classList.toggle('hidden',!session);if(session){await load();clearInterval(timer);timer=setInterval(load,10000)}}
+$('loginBtn').onclick=async()=>{ $('loginError').textContent='';const {error}=await client.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error){$('loginError').textContent='Giriş başarısız: '+error.message;return}await show()};
+$('logout').onclick=async()=>{clearInterval(timer);await client.auth.signOut();show()};$('refresh').onclick=load;
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('hidden',p.id!==b.dataset.tab))});show();
+</script></body></html>
