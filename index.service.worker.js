@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1786905905|7245147';
+const CACHE_VERSION = '1786906777|9575211';
 /** @type {string} */
 const CACHE_PREFIX = 'Kor Dovusu-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
@@ -94,11 +94,8 @@ self.addEventListener(
 	 * @param {FetchEvent} event
 	 */
 	(event) => {
-		const url = event.request.url || '';
-		if (url.includes('/admin')) {
-			return; // Let browser handle admin panel directly!
-		}
 		const isNavigate = event.request.mode === 'navigate';
+		const url = event.request.url || '';
 		const referrer = event.request.referrer || '';
 		const base = referrer.slice(0, referrer.lastIndexOf('/') + 1);
 		const local = url.startsWith(base) ? url.replace(base, '') : '';
