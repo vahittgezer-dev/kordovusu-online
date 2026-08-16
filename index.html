@@ -51,7 +51,7 @@
         <img src="https://play.google.com/intl/en_us/badges/static/images/badges/tr_badge_web_generic.png" alt="Google Play'den Alın" style="height: 48px; object-fit: contain;">
       </a>
 
-      <div class="fact"><b>FUTBOL BİLGİSİ</b><span id="factText">Kartlar ve futbol verileri hazırlanıyor…</span></div>
+      <div class="fact"><b>💡 OYUN İPUCU</b><span id="factText">Saha ve kartlar hazırlanıyor…</span></div>
       <progress id="progress" max="1" value="0"></progress>
       <div class="meta"><span id="sizeText">BAĞLANTI KURULUYOR</span><span id="percentText">0%</span></div>
       <div id="notice"></div>
@@ -63,20 +63,16 @@
     const GODOT_CONFIG={"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":73739044,"index.wasm":39513091},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
     const GODOT_THREADS_ENABLED=false;
     const facts=[
-      "Cristiano Ronaldo, 895 gol ile oyunun veri setindeki kariyer golü rekoruna sahiptir.",
-      "Pelé, 606 gol ile oyunun veri setindeki üst düzey lig golü rekoruna sahiptir.",
-      "Alex de Souza, 841 maç ile oyunun veri setindeki üst düzey lig maçı rekoruna sahiptir.",
-      "Cristiano Ronaldo, 233 maç ile oyunun veri setindeki millî takım maçı rekoruna sahiptir.",
-      "Cristiano Ronaldo, 146 gol ile oyunun veri setindeki millî takım golü rekoruna sahiptir.",
-      "Lionel Messi, 8 Ballon d'Or ile oyunun veri setindeki ödül rekoruna sahiptir.",
-      "Lionel Messi, 44 kupa ile oyunun veri setindeki kariyer kupası rekoruna sahiptir.",
-      "Cristiano Ronaldo, 140 gol ile oyunun veri setindeki Şampiyonlar Ligi gol rekoruna sahiptir.",
-      "Ronaldo Nazário, 15 gol ile oyunun veri setindeki Dünya Kupası gol rekoruna sahiptir.",
-      "George Best, 15 farklı kulüp ile oyunun veri setindeki kulüp rekoruna sahiptir.",
-      "Thibaut Courtois, 200 cm ile oyunun veri setindeki en uzun futbolcudur.",
-      "Radamel Falcao, yaklaşık 13 yaşında profesyonel lig kariyerine başladı.",
-      "Gianluigi Donnarumma'nın güncel veya son kayıtlı forma numarası 99'dur.",
-      "Kör Dövüşü verileri 28.07.2026 tarihinde güncellenmiştir."
+      "Her gün oyuna giriş yaparak Görevler sekmesinden günlük altın ve paket ödüllerini toplamayı unutma!",
+      "Kartlarının güç ve yetenek değerlerini iyi analiz et; ikili mücadelelerde doğru kartı seçmek zaferi getirir.",
+      "Mağaza bölümündeki günlük sınırlı paketleri takip ederek efsanevi futbolcuları kadrona katabilirsin.",
+      "Kadro menüsünden takım dizilişini düzenle; en güçlü ilk 11'ini kurarak maçlara avantajlı başla.",
+      "Arkadaşla Maç lobisinden dilediğin odaya katılabilir veya şifreli odalarla arkadaşlarınla özel maç yapabilirsin.",
+      "Pazar sekmesini kullanarak kadrona uymayan kartları satıp yerine istediğin yıldız futbolcuları transfer edebilirsin.",
+      "Maçlarda rakibinin stratejisini tahmin et; doğru hamle zamanlamasıyla kritik goller bulabilirsin.",
+      "Hesabını kaydedip giriş yaparak altınlarını, desteni ve tüm ilerlemeni bulutta güvenle saklayabilirsin.",
+      "Lig maçlarını kazanıp puanları topla; lig sıralamasında zirveye tırmanarak büyük ödüllere hak kazan!",
+      "Günlük ve haftalık görevleri tamamlayarak ekstra bonus altın ve nadir kart paketleri kazanabilirsin."
     ].sort(()=>Math.random()-.5);
     const overlay=document.getElementById('loading'),progress=document.getElementById('progress'),fact=document.getElementById('factText'),notice=document.getElementById('notice'),percent=document.getElementById('percentText'),size=document.getElementById('sizeText');
     let fi=0;function nextFact(){fact.classList.add('fade');setTimeout(()=>{fact.textContent=facts[fi++%facts.length];fact.classList.remove('fade')},220)}nextFact();const factTimer=setInterval(nextFact,4600);
