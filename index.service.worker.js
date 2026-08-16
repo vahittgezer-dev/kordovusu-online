@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1786882681|10456800';
+const CACHE_VERSION = '1786882905|10603521';
 /** @type {string} */
 const CACHE_PREFIX = 'Kor Dovusu-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
