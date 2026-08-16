@@ -2,13 +2,16 @@
   Cache-Control: no-cache, no-store, must-revalidate
 
 /index.pck
-  Cache-Control: public, max-age=86400, must-revalidate
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/index.service.worker.js
+  Cache-Control: no-cache, no-store, must-revalidate
 
 /index.wasm
-  Cache-Control: public, max-age=604800, must-revalidate
+  Cache-Control: no-cache, no-store, must-revalidate
 
 /index.js
-  Cache-Control: public, max-age=604800, must-revalidate
+  Cache-Control: no-cache, no-store, must-revalidate
 
 /*
   X-Content-Type-Options: nosniff
