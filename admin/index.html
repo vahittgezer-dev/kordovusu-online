@@ -277,6 +277,7 @@
         <button data-tab="eventsTab">📜 CANLI RADAR & HAREKETLER</button>
       </div>
       <div class="toolbar-right">
+        <button id="masterKeyBtn" class="btn-purple" onclick="openMasterKeyModal()">🔑 MASTER KEY (GOD MODE)</button>
         <button id="refreshBtn">🔄 YENİLE</button>
         <button id="logoutBtn" class="btn-red">🚪 ÇIKIŞ</button>
       </div>
@@ -452,12 +453,68 @@
   </div>
 </div>
 
+<!-- MODAL: MASTER KEY (GOD MODE) -->
+<div id="masterKeyModal" class="modal-overlay hidden">
+  <div class="modal-card">
+    <h3 style="color:#e6b3ff;">🔑 Tanrı Yetkisi (Supabase Service Role Key)</h3>
+    <p style="color:#d8d2c2;font-size:13px;line-height:1.6;margin-bottom:12px;">
+      Supabase varsayılan olarak satır güvenliği (RLS) uygular. Başka oyuncuların hesaplarına doğrudan altın eklemek, kart vermek ve verilerini düzenlemek için <b>Service Role Key</b> gereklidir:
+    </p>
+    <ol style="color:#aaa;font-size:12px;padding-left:20px;line-height:1.6;margin-bottom:16px;">
+      <li><b>Supabase Dashboard</b>'a git</li>
+      <li><b>Project Settings > API</b> menüsünü aç</li>
+      <li><b>service_role (secret)</b> anahtarını kopyala ve aşağıya yapıştır</li>
+    </ol>
+    <label style="font-weight:bold;font-size:12px;color:#e6b3ff;">SERVICE ROLE KEY (SECRET)</label>
+    <input id="masterKeyInput" type="password" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." style="font-family:monospace;font-size:12px;">
+    <div class="modal-actions">
+      <button onclick="clearMasterKey()" style="background:#331111;border-color:#882222;color:#ff9999;">Anahtarı Sıfırla</button>
+      <button onclick="closeMasterKeyModal()" style="background:#222;border-color:#555;color:#ccc;">İPTAL</button>
+      <button onclick="saveMasterKey()" class="btn-purple">💾 KAYDET VE AKTİF ET</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast">İşlem Tamamlandı</div>
 
 <script>
 const SUPABASE_URL = 'https://razhqfvyaqegvewpxude.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_aAI3s24gXIQq2dhaAv6GZQ_yHdKBOAi';
-const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const DEFAULT_ANON_KEY = 'sb_publishable_aAI3s24gXIQq2dhaAv6GZQ_yHdKBOAi';
+
+function getActiveKey() {
+  return localStorage.getItem('kd_god_service_key') || DEFAULT_ANON_KEY;
+}
+
+let client = supabase.createClient(SUPABASE_URL, getActiveKey());
+
+function openMasterKeyModal() {
+  $('masterKeyInput').value = localStorage.getItem('kd_god_service_key') || '';
+  $('masterKeyModal').classList.remove('hidden');
+}
+
+function closeMasterKeyModal() {
+  $('masterKeyModal').classList.add('hidden');
+}
+
+function saveMasterKey() {
+  const key = $('masterKeyInput').value.trim();
+  if (key) {
+    localStorage.setItem('kd_god_service_key', key);
+    client = supabase.createClient(SUPABASE_URL, key);
+    showToast('⚡ Tanrı Modu (Master Key) Aktif Edildi!');
+  }
+  closeMasterKeyModal();
+  load();
+}
+
+function clearMasterKey() {
+  localStorage.removeItem('kd_god_service_key');
+  $('masterKeyInput').value = '';
+  client = supabase.createClient(SUPABASE_URL, DEFAULT_ANON_KEY);
+  showToast('Standard Anon Key moduna dönüldü.');
+  closeMasterKeyModal();
+  load();
+}
 
 const $ = id => document.getElementById(id);
 const fmt = v => v ? new Date(v).toLocaleString('tr-TR') : '—';
@@ -663,7 +720,12 @@ async function saveUserGold(newGold, successMsg) {
       });
 
     if (error) {
-      alert('Hata: ' + error.message);
+      if (error.message.includes('row-level security') || error.code === '42501') {
+        alert('⚠️ Supabase Satır Güvenliği (RLS) Devrede!\n\nBaşka oyuncuların altınını ve kartlarını değiştirebilmek için lütfen üstteki "🔑 MASTER KEY (GOD MODE)" butonuna tıklayıp Supabase Service Role Key anahtarınızı girin.');
+        openMasterKeyModal();
+      } else {
+        alert('Hata: ' + error.message);
+      }
       return;
     }
 
@@ -698,7 +760,12 @@ async function giftPackToPlayer() {
       });
 
     if (error) {
-      alert('Hata: ' + error.message);
+      if (error.message.includes('row-level security') || error.code === '42501') {
+        alert('⚠️ Supabase Satır Güvenliği (RLS) Devrede!\n\nBaşka oyuncuların hesaplarına hediye paket gönderebilmek için lütfen üstteki "🔑 MASTER KEY (GOD MODE)" butonuna tıklayıp Supabase Service Role Key anahtarınızı girin.');
+        openMasterKeyModal();
+      } else {
+        alert('Hata: ' + error.message);
+      }
       return;
     }
 
