@@ -12,14 +12,11 @@
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
 <link rel="manifest" href="index.manifest.json">
 
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5832452426246320" crossorigin="anonymous"></script>
   <style>
     :root{color-scheme:dark;--gold:#e5b942;--gold2:#8f6418;--ink:#050403}
     *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#030302}
-    body{display:flex;align-items:center;justify-content:center;font-family:Arial,"Noto Sans",sans-serif;color:#f5ecd5;touch-action:none;overscroll-behavior:none}
-    /* The game UI is authored for 720x1080. Keeping that 2:3 ratio prevents
-       browser windows from stretching panels, card frames and menu artwork. */
-    #canvas{display:block;width:min(100vw,calc(100vh * 2 / 3));height:min(100vh,calc(100vw * 3 / 2));aspect-ratio:2/3;outline:0;background:#000;box-shadow:0 0 42px rgba(0,0,0,.92);touch-action:none}
+    body{font-family:Arial,"Noto Sans",sans-serif;color:#f5ecd5;touch-action:none;overscroll-behavior:none}
+    #canvas{display:block;width:100%;height:100%;outline:0}
     #loading{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:28px;background:radial-gradient(circle at 50% 38%,rgba(181,126,24,.22),transparent 30%),linear-gradient(#0c0905,#020202)}
     #loading.hidden{opacity:0;visibility:hidden;transition:opacity .45s ease,visibility .45s}
     .loader{width:min(610px,92vw);text-align:center}
@@ -31,7 +28,7 @@
     progress{display:block;width:100%;height:9px;border:1px solid rgba(229,185,66,.55);border-radius:20px;overflow:hidden;background:#17130d}progress::-webkit-progress-bar{background:#17130d}progress::-webkit-progress-value{background:linear-gradient(90deg,var(--gold2),#f5d76d)}progress::-moz-progress-bar{background:linear-gradient(90deg,var(--gold2),#f5d76d)}
     .meta{display:flex;justify-content:space-between;margin-top:9px;color:#9f9274;font-size:11px;font-weight:700;letter-spacing:.5px}
     #notice{display:none;margin-top:16px;padding:14px;border:1px solid #a64343;border-radius:10px;background:#321818;color:#ffd8d8;white-space:pre-line}
-    #fullscreen{display:none;position:fixed;z-index:30;right:max(12px,env(safe-area-inset-right));top:max(12px,env(safe-area-inset-top));width:48px;height:48px;border:1px solid rgba(229,185,66,.72);border-radius:12px;background:rgba(8,6,3,.84);color:var(--gold);font-size:25px;line-height:1;box-shadow:0 5px 20px #000;cursor:pointer;-webkit-tap-highlight-color:transparent}
+    #fullscreen{position:fixed;z-index:30;right:max(12px,env(safe-area-inset-right));top:max(12px,env(safe-area-inset-top));width:48px;height:48px;border:1px solid rgba(229,185,66,.72);border-radius:12px;background:rgba(8,6,3,.84);color:var(--gold);font-size:25px;line-height:1;box-shadow:0 5px 20px #000;cursor:pointer;-webkit-tap-highlight-color:transparent}
     #fullscreen:active{transform:scale(.94)}
     #rotate{display:none;position:fixed;inset:0;z-index:40;align-items:center;justify-content:center;padding:30px;text-align:center;background:#050403;color:var(--gold);font-size:20px;font-weight:800}
     @media(orientation:landscape) and (max-height:520px){#rotate{display:flex}}
@@ -60,7 +57,7 @@
   <noscript>Bu oyunu çalıştırmak için JavaScript gereklidir.</noscript>
   <script src="index.js"></script>
   <script>
-    const GODOT_CONFIG={"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":73736372,"index.wasm":37900721},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
+    const GODOT_CONFIG={"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":41404532,"index.wasm":39513091},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
     const GODOT_THREADS_ENABLED=false;
     const facts=[
       "Cristiano Ronaldo, 895 gol ile oyunun veri setindeki kariyer golü rekoruna sahiptir.",
