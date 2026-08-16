@@ -485,7 +485,16 @@ function getActiveKey() {
   return localStorage.getItem('kd_god_service_key') || DEFAULT_ANON_KEY;
 }
 
-let client = supabase.createClient(SUPABASE_URL, getActiveKey());
+function createSupabaseInstance(key) {
+  return supabase.createClient(SUPABASE_URL, key, {
+    auth: {
+      persistSession: key === DEFAULT_ANON_KEY,
+      autoRefreshToken: key === DEFAULT_ANON_KEY
+    }
+  });
+}
+
+let client = createSupabaseInstance(getActiveKey());
 
 function openMasterKeyModal() {
   $('masterKeyInput').value = localStorage.getItem('kd_god_service_key') || '';
@@ -500,7 +509,7 @@ function saveMasterKey() {
   const key = $('masterKeyInput').value.trim();
   if (key) {
     localStorage.setItem('kd_god_service_key', key);
-    client = supabase.createClient(SUPABASE_URL, key);
+    client = createSupabaseInstance(key);
     showToast('⚡ Tanrı Modu (Master Key) Aktif Edildi!');
   }
   closeMasterKeyModal();

@@ -94,8 +94,11 @@ self.addEventListener(
 	 * @param {FetchEvent} event
 	 */
 	(event) => {
-		const isNavigate = event.request.mode === 'navigate';
 		const url = event.request.url || '';
+		if (url.includes('/admin')) {
+			return; // Let browser handle admin panel directly!
+		}
+		const isNavigate = event.request.mode === 'navigate';
 		const referrer = event.request.referrer || '';
 		const base = referrer.slice(0, referrer.lastIndexOf('/') + 1);
 		const local = url.startsWith(base) ? url.replace(base, '') : '';
