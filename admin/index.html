@@ -519,8 +519,8 @@ function saveMasterKey() {
 function clearMasterKey() {
   localStorage.removeItem('kd_god_service_key');
   $('masterKeyInput').value = '';
-  client = supabase.createClient(SUPABASE_URL, DEFAULT_ANON_KEY);
-  showToast('Standard Anon Key moduna dönüldü.');
+  client = createSupabaseInstance(DEFAULT_ANON_KEY);
+  showToast('Standart Anahtara dönüldü (SQL İzinleri Aktif).');
   closeMasterKeyModal();
   load();
 }
